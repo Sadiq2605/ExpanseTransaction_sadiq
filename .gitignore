@@ -1,0 +1,36 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.sln.docstates
+.vscode/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+.nuget/
+
+# Local DB
+*.mdf
+*.ldf
+
+# Logs
+logs/
+*.log
+
+# Runtime
+*.exe
+*.dll
+
+# OS
+.DS_Store
+Thumbs.db
