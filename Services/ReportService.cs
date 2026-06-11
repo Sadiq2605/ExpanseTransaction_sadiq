@@ -58,4 +58,12 @@ public class ReportService
             .OrderByDescending(e => e.Amount)
             .FirstOrDefaultAsync();
     }
+    
+    public async Task<List<Expense>> GetLowestExpensesAsync(int count = 5)
+    {
+        return await _context.Expenses
+            .OrderBy(e => e.Amount)
+            .Take(count)
+            .ToListAsync();
+    }
 }
