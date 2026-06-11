@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Services;
 using ExpenseTracker.Data;
 
@@ -9,16 +11,30 @@ class Program
 {
     static async Task Main(string[] args)
     {
+        // Load configuration
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+        
         // Setup Dependency Injection
         var services = new ServiceCollection();
         
-        services.AddLogging(config =>
+        // Add configuration
+        services.AddSingleton<IConfiguration>(config);
+        
+        // Add logging
+        services.AddLogging(logConfig =>
         {
-            config.AddConsole();
-            config.SetMinimumLevel(LogLevel.Information);
+            logConfig.AddConsole();
+            logConfig.SetMinimumLevel(LogLevel.Information);
         });
         
-        services.AddScoped<ExpenseDbContext>();
+        // Add DbContext with PostgreSQL (Supabase)
+        var connectionString = config.GetConnectionString("DefaultConnection");
+        services.AddDbContext<ExpenseDbContext>(options =>
+            options.UseNpgsql(connectionString)
+        );
+        
         services.AddScoped<ExpenseService>();
         services.AddScoped<ReportService>();
         
@@ -30,6 +46,7 @@ class Program
         var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
         
         logger.LogInformation("Expense Tracker Application Started");
+        logger.LogInformation($"Connected to Supabase Database");
         
         try
         {
@@ -41,7 +58,7 @@ class Program
         }
         finally
         {
-            serviceProvider.Dispose();
+            await serviceProvider.DisposeAsync();
         }
     }
     
