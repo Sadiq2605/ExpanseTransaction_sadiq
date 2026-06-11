@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ExpenseTracker.Mobile.Pages.ExpensesListPage"
+             Title="Expenses"
+             BackgroundColor="{StaticResource PageBackgroundColor}">
+
+    <ContentPage.Content>
+        <RefreshView Command="{Binding LoadExpensesCommand}" IsRefreshing="{Binding IsLoading}">
+            <VerticalStackLayout Padding="16" Spacing="12">
+
+                <!-- Category Filter -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Filter by Category" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource TextColor}" />
+                    <Picker ItemsSource="{Binding Categories}"
+                            SelectedItem="{Binding SelectedCategory}"
+                            SelectedItemChangedCommand="{Binding CategoryChangedCommand}"
+                            BackgroundColor="White"
+                            TextColor="{StaticResource TextColor}"
+                            FontSize="14" />
+                </VerticalStackLayout>
+
+                <!-- Total for Selected Category -->
+                <Frame BorderColor="{StaticResource PrimaryColor}" CornerRadius="12" HasShadow="True" Padding="16">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Total" FontSize="12" TextColor="{StaticResource LightTextColor}" FontAttributes="Bold" />
+                        <Label Text="{Binding SelectedCategoryTotal, StringFormat='${0:F2}'}" FontSize="28" TextColor="{StaticResource PrimaryColor}" FontAttributes="Bold" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Expenses List -->
+                <CollectionView ItemsSource="{Binding Expenses}" SelectionMode="Single">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Delete" 
+                                                   BackgroundColor="{StaticResource DangerColor}"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:ExpensesListPage}}, Path=BindingContext.DeleteExpenseCommand}"
+                                                   CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Frame BorderColor="#E0E0E0" CornerRadius="10" HasShadow="True" Padding="12" Margin="0,8">
+                                    <VerticalStackLayout Spacing="4">
+                                        <HorizontalStackLayout Spacing="12">
+                                            <Label Text="{Binding CategoryEmoji}" FontSize="24" VerticalTextAlignment="Center" />
+                                            <VerticalStackLayout Spacing="2" FlexLayout.Basis="65%">
+                                                <Label Text="{Binding Description}" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource TextColor}" />
+                                                <Label Text="{Binding Category}" FontSize="11" TextColor="{StaticResource LightTextColor}" />
+                                                <Label Text="{Binding FormattedDate}" FontSize="10" TextColor="{StaticResource LightTextColor}" />
+                                            </VerticalStackLayout>
+                                            <Label Text="{Binding FormattedAmount}" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource PrimaryColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </RefreshView>
+    </ContentPage.Content>
+
+</ContentPage>
