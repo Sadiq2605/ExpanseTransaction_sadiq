@@ -1,17 +1,20 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ExpenseTracker.Models;
 
 namespace ExpenseTracker.Data;
 
 public class ExpenseDbContext : DbContext
 {
-    public DbSet<Expense> Expenses { get; set; } = null!;
+    private readonly IConfiguration _configuration;
     
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public ExpenseDbContext(DbContextOptions<ExpenseDbContext> options, IConfiguration configuration) 
+        : base(options)
     {
-        // Using LocalDB - adjust connection string as needed
-        optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=ExpenseTrackerDb;Trusted_Connection=true;");
+        _configuration = configuration;
     }
+    
+    public DbSet<Expense> Expenses { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
