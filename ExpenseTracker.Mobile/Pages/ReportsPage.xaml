@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ExpenseTracker.Mobile.Pages.ReportsPage"
+             Title="Reports"
+             BackgroundColor="{StaticResource PageBackgroundColor}">
+
+    <ContentPage.Content>
+        <RefreshView Command="{Binding LoadReportsCommand}" IsRefreshing="{Binding IsLoading}">
+            <ScrollView>
+                <VerticalStackLayout Padding="16" Spacing="12">
+
+                    <!-- Month Picker -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Select Month" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource TextColor}" />
+                        <DatePicker Date="{Binding SelectedDate}" />
+                    </VerticalStackLayout>
+
+                    <!-- Monthly Total Card -->
+                    <Frame BorderColor="{StaticResource PrimaryColor}" CornerRadius="12" HasShadow="True" Padding="16">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Monthly Total" FontSize="14" TextColor="{StaticResource LightTextColor}" FontAttributes="Bold" />
+                            <Label Text="{Binding MonthlyTotal, StringFormat='${0:F2}'}" FontSize="32" TextColor="{StaticResource PrimaryColor}" FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Stats Row -->
+                    <HorizontalStackLayout Spacing="12">
+                        <!-- Average -->
+                        <Frame BorderColor="{StaticResource SecondaryColor}" CornerRadius="12" HasShadow="True" Padding="12" FlexLayout.Basis="48%">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Average" FontSize="12" TextColor="{StaticResource LightTextColor}" />
+                                <Label Text="{Binding AverageExpense, StringFormat='${0:F2}'}" FontSize="20" TextColor="{StaticResource SecondaryColor}" FontAttributes="Bold" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!-- Highest -->
+                        <Frame BorderColor="{StaticResource DangerColor}" CornerRadius="12" HasShadow="True" Padding="12" FlexLayout.Basis="48%">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Highest" FontSize="12" TextColor="{StaticResource LightTextColor}" />
+                                <Label Text="{Binding HighestExpenseInfo}" FontSize="13" TextColor="{StaticResource DangerColor}" FontAttributes="Bold" LineBreakMode="TailTruncation" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </HorizontalStackLayout>
+
+                    <!-- Category Breakdown Header -->
+                    <Label Text="Expenses by Category" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource TextColor}" Margin="0,12,0,8" />
+
+                    <!-- Category Reports -->
+                    <CollectionView ItemsSource="{Binding CategoryReports}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BorderColor="#E0E0E0" CornerRadius="10" HasShadow="True" Padding="12" Margin="0,4">
+                                    <VerticalStackLayout Spacing="6">
+                                        <HorizontalStackLayout Spacing="12">
+                                            <VerticalStackLayout Spacing="2" FlexLayout.Basis="65%">
+                                                <Label Text="{Binding Category}" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource TextColor}" />
+                                                <ProgressBar Progress="{Binding Percentage, Converter={StaticResource PercentageConverter}}" ProgressColor="{StaticResource PrimaryColor}" />
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Spacing="2" HorizontalTextAlignment="End">
+                                                <Label Text="{Binding Total, StringFormat='${0:F2}'}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource PrimaryColor}" />
+                                                <Label Text="{Binding PercentageString}" FontSize="11" TextColor="{StaticResource LightTextColor}" />
+                                            </VerticalStackLayout>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+    </ContentPage.Content>
+
+</ContentPage>

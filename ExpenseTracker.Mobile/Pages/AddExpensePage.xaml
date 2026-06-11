@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ExpenseTracker.Mobile.Pages.AddExpensePage"
+             Title="Add Expense"
+             BackgroundColor="{StaticResource PageBackgroundColor}">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="16">
+
+                <!-- Description Input -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Description" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource TextColor}" />
+                    <Entry x:Name="DescriptionEntry"
+                           Placeholder="Enter expense description"
+                           Text="{Binding Description}"
+                           FontSize="14"
+                           Padding="12"
+                           BackgroundColor="White"
+                           TextColor="{StaticResource TextColor}"
+                           PlaceholderColor="{StaticResource LightTextColor}" />
+                </VerticalStackLayout>
+
+                <!-- Amount Input -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Amount" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource TextColor}" />
+                    <Entry x:Name="AmountEntry"
+                           Placeholder="0.00"
+                           Text="{Binding Amount}"
+                           Keyboard="Numeric"
+                           FontSize="14"
+                           Padding="12"
+                           BackgroundColor="White"
+                           TextColor="{StaticResource TextColor}"
+                           PlaceholderColor="{StaticResource LightTextColor}" />
+                </VerticalStackLayout>
+
+                <!-- Category Picker -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Category" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource TextColor}" />
+                    <Picker ItemsSource="{Binding Categories}"
+                            SelectedItem="{Binding SelectedCategory}"
+                            BackgroundColor="White"
+                            TextColor="{StaticResource TextColor}"
+                            FontSize="14" />
+                </VerticalStackLayout>
+
+                <!-- Add Button -->
+                <Button Text="Add Expense"
+                        Command="{Binding AddExpenseCommand}"
+                        BackgroundColor="{StaticResource SuccessColor}"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Padding="12"
+                        CornerRadius="8" />
+
+                <!-- Cancel Button -->
+                <Button Text="Cancel"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="#9E9E9E"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Padding="12"
+                        CornerRadius="8" />
+
+                <!-- Loading Indicator -->
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   IsVisible="{Binding IsLoading}"
+                                   Color="{StaticResource PrimaryColor}" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>
